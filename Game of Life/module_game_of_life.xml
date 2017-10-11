@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_game_of_life" default="compile.module.game_of_life">
+  <dirname property="module.game_of_life.basedir" file="${ant.file.module_game_of_life}"/>
+  
+  <property name="module.jdk.home.game_of_life" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.game_of_life" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.game_of_life" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.game_of_life" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="game_of_life.output.dir" value="${module.game_of_life.basedir}/out/production/Game of Life"/>
+  <property name="game_of_life.testoutput.dir" value="${module.game_of_life.basedir}/out/test/Game of Life"/>
+  
+  <path id="game_of_life.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="game_of_life.module.production.classpath">
+    <path refid="${module.jdk.classpath.game_of_life}"/>
+  </path>
+  
+  <path id="game_of_life.runtime.production.module.classpath">
+    <pathelement location="${game_of_life.output.dir}"/>
+  </path>
+  
+  <path id="game_of_life.module.classpath">
+    <path refid="${module.jdk.classpath.game_of_life}"/>
+    <pathelement location="${game_of_life.output.dir}"/>
+  </path>
+  
+  <path id="game_of_life.runtime.module.classpath">
+    <pathelement location="${game_of_life.testoutput.dir}"/>
+    <pathelement location="${game_of_life.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.game_of_life">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.game_of_life">
+    <patternset refid="excluded.from.module.game_of_life"/>
+  </patternset>
+  
+  <path id="game_of_life.module.sourcepath">
+    <dirset dir="${module.game_of_life.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.game_of_life" depends="compile.module.game_of_life.production,compile.module.game_of_life.tests" description="Compile module Game of Life"/>
+  
+  <target name="compile.module.game_of_life.production" depends="register.custom.compilers" description="Compile module Game of Life; production classes">
+    <mkdir dir="${game_of_life.output.dir}"/>
+    <javac2 destdir="${game_of_life.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.game_of_life}/javac">
+      <compilerarg line="${compiler.args.game_of_life}"/>
+      <bootclasspath refid="game_of_life.module.bootclasspath"/>
+      <classpath refid="game_of_life.module.production.classpath"/>
+      <src refid="game_of_life.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.game_of_life"/>
+    </javac2>
+    
+    <copy todir="${game_of_life.output.dir}">
+      <fileset dir="${module.game_of_life.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.game_of_life.tests" depends="register.custom.compilers,compile.module.game_of_life.production" description="compile module Game of Life; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.game_of_life" description="cleanup module">
+    <delete dir="${game_of_life.output.dir}"/>
+    <delete dir="${game_of_life.testoutput.dir}"/>
+  </target>
+</project>
