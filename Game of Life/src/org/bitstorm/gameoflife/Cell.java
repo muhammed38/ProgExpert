@@ -60,6 +60,16 @@ public class Cell {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "Cell at ("+col+", "+row+") with "+neighbour+" neighbour"+(neighbour==1?"":"s");
+        StringBuilder builder = new StringBuilder();
+        builder.append("Cell at (");
+        builder.append(col);
+        builder.append(row);
+        builder.append(") with ");
+        builder.append(neighbour);
+        builder.append(" neighbour(s)");
+
+        return builder.toString();
+
+//        return "Cell at ("+col+", "+row+") with "+neighbour+" neighbour"+(neighbour==1?"":"s");
     }
 }
